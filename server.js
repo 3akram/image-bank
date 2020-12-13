@@ -10,12 +10,18 @@ const app     = express();
 const DB_URI  = 'mongodb+srv://3akram:testtest@cluster0.qonvg.mongodb.net/image-bank?retryWrites=true&w=majority';
 const API_DIR = '/api/v1';
 
+// Logging request data
+app.use(morgan('dev'));
+
 //bodyParser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 //Passport middleware
 app.use(passport.initialize());
+
+// set uploads to be staticly accessable
+
 
 //Passport Config
 require('./config/passport.js')(passport);
@@ -49,8 +55,6 @@ app.get('/', (req, res) => {
 })
 
 
-// Logging request data
-app.use(morgan('dev'));
 
 // Fire the connection to the database
 connectToDatabase();

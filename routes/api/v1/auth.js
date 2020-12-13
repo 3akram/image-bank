@@ -37,7 +37,7 @@ router.get('/test', (req, res) => {
 router.post('/register', async (req, res) => {
     
     // Extract data from body
-    const { name, email, password, password2 } = req.body;
+    const { name, email, password } = req.body;
 
     let isExits = User.findOne(email);
     if(isExits) return res.json({success: false, message: 'EMAIL_EXITS'})

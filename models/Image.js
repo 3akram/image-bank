@@ -14,13 +14,15 @@ const imageSchema = Schema({
     }
 })
 
-imageSchema.pre('save', (doc) => {
+imageSchema.pre('save', (next) => {
     console.log('before saving');
+    next();
 })
 
+// event fires after a find method
 imageSchema.post('find', function(docs) {
     console.log('to do is to add __hostname to the path');
-    });
+});
 
 const Image = mongoose.model(MODEL_NAME, imageSchema);
 
