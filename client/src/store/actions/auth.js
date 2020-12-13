@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
+export const AUTHENTICATE = 'AUTHENTICATE';
 
 export const signUp = (name, email, password) => {
 	return async (dispatch) => {
@@ -30,13 +31,7 @@ export const login = (email, password) => {
 		try {
 			const response = await axios.post('/api/v1/auth/login', data);
 
-			dispatch({
-				type: LOGIN,
-				payload: {
-					token: response.data.token,
-					userId: response.data.userId,
-				},
-			});
+			dispatch(authenticate(response.data.token, response.data.userId));
 			const expirationDate = new Date(
 				new Date().getTime() + parseInt(response.data.expiresIn) * 1000
 			);
@@ -48,6 +43,16 @@ export const login = (email, password) => {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+};
+
+export const authenticate = (token, userId) => {
+	return {
+		type: AUTHENTICATE,
+		payload: {
+			token: token,
+			userId: userId,
+		},
 	};
 };
 

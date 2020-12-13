@@ -44,16 +44,6 @@ const connectToDatabase = async () => {
 app.use(`${API_DIR}/auth`, auth);
 app.use(`${API_DIR}/images`, image);
 
-/*
- * method : GET
- * access : Public
- * desc   : Test entire api
- */
-
-app.get('/', (req, res) => {
-	res.send('app works');
-})
-
 
 // Make client static in node server
 

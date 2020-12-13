@@ -1,15 +1,15 @@
+import React, { useEffect } from 'react';
+
 import './App.css';
 
-import { Provider } from 'react-redux';
-import store from './config/store';
+import { useDispatch } from 'react-redux';
 
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Login from './components/LoginForm';
 import Signup from './components/SignupForm';
 import Gallery from './components/Gallery';
-
-import React from 'react';
+import * as authActions from './store/actions/auth';
 
 const Navbar = () => {
 	return (
@@ -41,27 +41,48 @@ const Navbar = () => {
 };
 
 function App() {
-	return (
-		<Provider store={store}>
-			<Router>
-				<div className="App">
-					<div>
-						<Navbar />
-					</div>
+	// to check session
+	const dispatch = useDispatch();
+	useEffect(() => {
+		const tryToLogin = () => {
+			const userData = localStorage.getItem('userData');
+			const transformedData = JSON.parse(userData);
 
-					<div className="auth-wrapper">
-						<div className="auth-inner">
-							<Switch>
-								<Route exact path="/" component={Login} />
-								<Route path="/sign-in" component={Login} />
-								<Route path="/sign-up" component={Signup} />
-								<Route path="/gallery" component={Gallery} />
-							</Switch>
-						</div>
+			if (!userData) {
+				return;
+			} else {
+				const { token, userId, expirationDate } = transformedData;
+				const expiryDate = new Date(expirationDate);
+
+				if (expiryDate <= new Date() || !token || !userId) {
+					return;
+				}
+				const action = authActions.authenticate(token, userId);
+				console.log(userData);
+				dispatch(action);
+			}
+		};
+		tryToLogin();
+	}, [dispatch]);
+	return (
+		<Router>
+			<div className="App">
+				<div>
+					<Navbar />
+				</div>
+
+				<div className="auth-wrapper">
+					<div className="auth-inner">
+						<Switch>
+							<Route exact path="/" component={Login} />
+							<Route path="/sign-in" component={Login} />
+							<Route path="/sign-up" component={Signup} />
+							<Route path="/gallery" component={Gallery} />
+						</Switch>
 					</div>
 				</div>
-			</Router>
-		</Provider>
+			</div>
+		</Router>
 	);
 }
 
