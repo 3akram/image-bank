@@ -4,7 +4,7 @@ const express = require('express'),
     bcrypt    = require('bcrypt'),
     jwt       = require('jsonwebtoken'),
     keys      = require('../../../config/keys'),
-    User      = require('../../../models/user');
+    User      = require('../../../models/User');
 
 
 // encrypting password method
