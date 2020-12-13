@@ -1,11 +1,13 @@
-
 const express = require('express'),
-    router    = express.Router(),
     bcrypt    = require('bcrypt'),
+    passport  = require('passport'),
     jwt       = require('jsonwebtoken'),
     keys      = require('../../../config/keys'),
     User      = require('../../../models/User');
 
+
+
+const router    = express.Router();
 
 // encrypting password method
 const encryptPassword = async (password) => {
@@ -82,6 +84,17 @@ router.post('/login', async (req, res) => {
         res.status(400).json({success: false, message: 'EMAIL_NOT_FOUND'});
     }
 })
+
+/*
+ * desc   : Test Api Authorization
+ * access : Private
+ * method : GET
+ * route  : /api/v1/auth/current
+ */
+
+router.get('/current', passport.authenticate('jwt', { session: false }), (req, res) => {
+    res.json(req.user);
+}) 
 
 
 module.exports = router;
