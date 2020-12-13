@@ -81,6 +81,25 @@ router.put('/add-tag', passport.authenticate('jwt', { session: false }), async (
     }
 })
 
+
+/*
+ * desc   :  Get all images
+ * access :  Public
+ * method :  GET
+ * route  :  /api/v1/images/all-images
+ */
+ 
+router.get('/all-images', async(req, res) => {
+    try {
+        const images = await Image.find();
+        res.json({success: true, data: images});
+    } catch(error) {
+        console.log(error)
+        res.json({success: false})
+    }
+    
+})
+
 /*
  * desc   :  Delete image
  * access :  Private

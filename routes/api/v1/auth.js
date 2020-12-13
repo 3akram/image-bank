@@ -39,8 +39,9 @@ router.post('/register', async (req, res) => {
     // Extract data from body
     const { name, email, password } = req.body;
 
-    let isExits = User.findOne(email);
-    if(isExits) return res.json({success: false, message: 'EMAIL_EXITS'})
+    let isExists = await User.findOne({email: email});
+    console.log(isExists);
+    if(isExists) return res.json({success: false, message: 'EMAIL_EXITS'})
 
     const newUser    = new User();
     newUser.name     = name;
@@ -76,8 +77,10 @@ router.post('/login', async (req, res) => {
             email : user.email
         };
 
-        const token = jwt.sign(payload, keys.secretOrKey, { expiresIn: 25200 });
-        res.json({success: true, token: `Bearer ${token}`});
+        const expiresIn = 25200;
+
+        const token = jwt.sign(payload, keys.secretOrKey, { expiresIn: expiresIn });
+        res.json({success: true, token: `Bearer ${token}`, userId: user.id, expiresIn: expiresIn});
 
     } catch (error) {
         console.log('Error', error);
