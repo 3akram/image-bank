@@ -3,7 +3,7 @@ const express   = require('express'),
     morgan      = require('morgan'),
     bodyParser  = require('body-parser'),
     auth        = require('./routes/api/v1/auth'),
-    v1          = require('./routes/api/v1/images'),
+    image       = require('./routes/api/v1/images'),
     passport    = require('passport');
 
 const app     = express();
@@ -42,7 +42,7 @@ const connectToDatabase = async () => {
 
 // add api middleware
 app.use(`${API_DIR}/auth`, auth);
-app.use(`${API_DIR}/images`, v1);
+app.use(`${API_DIR}/images`, image);
 
 /*
  * method : GET
@@ -59,7 +59,6 @@ app.get('/', (req, res) => {
 // Fire the connection to the database
 connectToDatabase();
 
-
 const PORT = 3000;
 
 app.on('ready', () => {
@@ -67,8 +66,3 @@ app.on('ready', () => {
         console.log(`Server running on port ${PORT}`);
     })
 })
-
-
-
-
-
