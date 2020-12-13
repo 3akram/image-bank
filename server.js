@@ -1,17 +1,28 @@
 const express   = require('express'),
     mongoose    = require('mongoose'),
-    morgan      = require('mogran'),
-    bodyParser  = require('body-parser');
+    morgan      = require('morgan'),
+    bodyParser  = require('body-parser'),
+    auth        = require('./routes/api/v1/auth'),
+    passport    = require('passport');
 
-const app = express();
+const app     = express();
+const DB_URI  = 'mongodb+srv://3akram:testtest@cluster0.qonvg.mongodb.net/image-bank?retryWrites=true&w=majority';
+const API_DIR = '/api/v1';
 
-const dbURI = 'mongodb+srv://3akram:testtest@cluster0.qonvg.mongodb.net/image-bank?retryWrites=true&w=majority';
+//bodyParser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+//Passport middleware
+app.use(passport.initialize());
+
+//Passport Config
+require('./config/passport.js')(passport);
 
 // Database Connection Method
 const connectToDatabase = async () => {
     try {
-
-        await mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+        await mongoose.connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
         console.log('Database Connected Succesfully');
 
         // Emit ready event to start the application
@@ -21,6 +32,9 @@ const connectToDatabase = async () => {
     }
 }
 
+
+// add api middleware
+app.use(`${API_DIR}/auth`, auth);
 
 /*
  * method : GET
