@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use(passport.initialize());
 
 // set uploads to be staticly accessable
-
+app.use('/uploads', express.static('uploads'));
 
 //Passport Config
 require('./config/passport.js')(passport);
@@ -67,5 +67,8 @@ app.on('ready', () => {
         console.log(`Server running on port ${PORT}`);
     })
 })
+
+
+
 
 
