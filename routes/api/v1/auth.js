@@ -1,9 +1,9 @@
-const keys = require('../../../config/keys');
 
 const express = require('express'),
     router    = express.Router(),
     bcrypt    = require('bcrypt'),
     jwt       = require('jsonwebtoken'),
+    keys      = require('../../../config/keys'),
     User      = require('../../../models/user');
 
 
