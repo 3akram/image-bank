@@ -69,12 +69,13 @@ router.post('/login', async (req, res) => {
         
         // sign user in
         const payload = {
+            id    : user._id,
             name  : user.name,
             email : user.email
         };
 
         const token = jwt.sign(payload, keys.secretOrKey, { expiresIn: 25200 });
-        res.json({success: true, token: `Barear ${token}`});
+        res.json({success: true, token: `Bearer ${token}`});
 
     } catch (error) {
         console.log('Error', error);

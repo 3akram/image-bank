@@ -3,6 +3,7 @@ const express   = require('express'),
     morgan      = require('morgan'),
     bodyParser  = require('body-parser'),
     auth        = require('./routes/api/v1/auth'),
+    v1          = require('./routes/api/v1/v1'),
     passport    = require('passport');
 
 const app     = express();
@@ -35,6 +36,7 @@ const connectToDatabase = async () => {
 
 // add api middleware
 app.use(`${API_DIR}/auth`, auth);
+app.use(`${API_DIR}/v1`, v1);
 
 /*
  * method : GET
